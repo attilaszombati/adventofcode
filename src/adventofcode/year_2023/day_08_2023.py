@@ -7,17 +7,7 @@ from adventofcode.util.input_helpers import get_input_for_day
 
 
 @register_solution(2023, 8, 1)
-def part_one(input_data: list[str]):
-    instructions = deque(input_data[0])
-    map_system = [i.split(" = ") for i in input_data[1:] if i]
-
-    parents = defaultdict(list)
-
-    for elem in map_system:
-        next_steps = elem[1][1:-1].split(", ")
-        parent, child = elem[0], (next_steps[0], next_steps[1])
-        parents[parent].append(child)
-
+def part_one(parents: dict):
     counter = 0
     target = "AAA"
 
@@ -33,17 +23,7 @@ def part_one(input_data: list[str]):
 
 
 @register_solution(2023, 8, 2)
-def part_two(input_data: list[str]):
-    instructions = deque(input_data[0])
-    map_system = [i.split(" = ") for i in input_data[1:] if i]
-
-    parents = defaultdict(list)
-
-    for elem in map_system:
-        next_steps = elem[1][1:-1].split(", ")
-        parent, child = elem[0], (next_steps[0], next_steps[1])
-        parents[parent].append(child)
-
+def part_two(parents: dict):
     start_elems = deque(i for i in parents if i.endswith("A"))
     counter = 0
 
@@ -69,5 +49,14 @@ def part_two(input_data: list[str]):
 
 if __name__ == '__main__':
     data = get_input_for_day(2023, 8)
-    part_one(data)
-    part_two(data)
+
+    instructions = deque(data[0])
+    map_system = [i.split(" = ") for i in data[1:] if i]
+    parents = defaultdict(list)
+    for elem in map_system:
+        next_steps = elem[1][1:-1].split(", ")
+        parent, child = elem[0], (next_steps[0], next_steps[1])
+        parents[parent].append(child)
+
+    part_one(parents)
+    part_two(parents)
