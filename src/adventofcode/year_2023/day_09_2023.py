@@ -13,10 +13,7 @@ def recursive_difference(numbers: list[int], can_extrapolate=True, part_two=Fals
             return new_value + numbers, can_extrapolate
         return numbers + new_value, can_extrapolate
 
-    arr = []
-    for i, j in zip(numbers[1:], numbers):
-        arr.append(i - j)
-
+    arr = [i - j for i, j in zip(numbers[1:], numbers)]
     next_arr, can_extrapolate = recursive_difference(arr, can_extrapolate, part_two=part_two)
     if not can_extrapolate:
         return next_arr, can_extrapolate
@@ -27,8 +24,8 @@ def recursive_difference(numbers: list[int], can_extrapolate=True, part_two=Fals
             new_value = [numbers[0] - next_arr[0]]
             return new_value + numbers, can_extrapolate
 
-        new_value = [numbers[-1] + next_arr[0]]
-        return new_value + numbers, can_extrapolate
+        new_value = [numbers[-1] + next_arr[-1]]
+        return numbers + new_value, can_extrapolate
     return recursive_difference(arr, can_extrapolate, part_two=part_two)
 
 
@@ -37,9 +34,9 @@ def part_one(input_data: list[str]):
     res = 0
     for line in input_data:
         line = [int(num) for num in line.split()]
-        x, can_extrapolate = recursive_difference(line, part_two=False)
+        new_line, can_extrapolate = recursive_difference(line, part_two=False)
         if can_extrapolate:
-            res += x[0]
+            res += new_line[-1]
 
     answer = res
 
@@ -51,9 +48,9 @@ def part_two(input_data: list[str]):
     res = 0
     for line in input_data:
         line = [int(num) for num in line.split()]
-        x, can_extrapolate = recursive_difference(line, part_two=True)
+        new_line, can_extrapolate = recursive_difference(line, part_two=True)
         if can_extrapolate:
-            res += x[0]
+            res += new_line[0]
 
     answer = res
 
